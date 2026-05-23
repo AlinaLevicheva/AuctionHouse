@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="1" author="alina">
+        <createTable tableName="sotrydnik">
+            <column name="id_sotrydnika" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="familiya" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="imya" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="otchestvo" type="VARCHAR(30)"/>
+            <column name="dolzhnost" type="VARCHAR(30)"/>
+            <column name="email" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nomer_telefona" type="CHAR(12)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="alina">
+        <createTable tableName="uchastnik">
+            <column name="id_uchastnika" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="familiya" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="imya" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="otchestvo" type="VARCHAR(30)"/>
+            <column name="kolichestvo_kuplennyh_tovarov" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="alina">
+        <createTable tableName="auktsion">
+            <column name="id_auktsiona" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="id_sotrydnika" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_auktsion_sotrydnik" references="sotrydnik(id_sotrydnika)"/>
+            </column>
+            <column name="nazvanie" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_provedeniya" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="alina">
+        <createTable tableName="lot">
+            <column name="id_lota" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nazvanie" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="opisanie" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="startovaya_tsena" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rezervnaya_tsena" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="5" author="alina">
+        <createTable tableName="sdelka">
+            <column name="id_sdelki" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="finalnaya_tsena" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="summa_k_oplate" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="summa_k_vyplate" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(30)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="6" author="alina">
+        <createTable tableName="stavka">
+            <column name="id_stavki" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="id_sdelki" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_stavka_sdelka" references="sdelka(id_sdelki)"/>
+            </column>
+            <column name="id_lota" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_stavka_lot" references="lot(id_lota)"/>
+            </column>
+            <column name="id_uchastnika" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_stavka_uchastnik" references="uchastnik(id_uchastnika)"/>
+            </column>
+            <column name="summa_stavki" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vremya_stavki" type="TIME">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="7" author="alina">
+        <createTable tableName="registratsiya">
+            <column name="id_registratsii" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="id_auktsiona" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_registratsiya_auktsion" references="auktsion(id_auktsiona)"/>
+            </column>
+            <column name="id_uchastnika" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_registratsiya_uchastnik" references="uchastnik(id_uchastnika)"/>
+            </column>
+            <column name="nomer_uchastnika" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status_dostupa" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="summa_zadatka" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
